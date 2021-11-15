@@ -1,0 +1,2 @@
+# turboTarot
+virtual tarot deck
