@@ -1,0 +1,14 @@
+C:\Users\Student\workspace\sideProjects\turboTarot\turboTarot\TurboTarot\bin\Debug\netcoreapp3.1\TurboTarot.exe
+C:\Users\Student\workspace\sideProjects\turboTarot\turboTarot\TurboTarot\bin\Debug\netcoreapp3.1\TurboTarot.deps.json
+C:\Users\Student\workspace\sideProjects\turboTarot\turboTarot\TurboTarot\bin\Debug\netcoreapp3.1\TurboTarot.runtimeconfig.json
+C:\Users\Student\workspace\sideProjects\turboTarot\turboTarot\TurboTarot\bin\Debug\netcoreapp3.1\TurboTarot.runtimeconfig.dev.json
+C:\Users\Student\workspace\sideProjects\turboTarot\turboTarot\TurboTarot\bin\Debug\netcoreapp3.1\TurboTarot.dll
+C:\Users\Student\workspace\sideProjects\turboTarot\turboTarot\TurboTarot\bin\Debug\netcoreapp3.1\TurboTarot.pdb
+C:\Users\Student\workspace\sideProjects\turboTarot\turboTarot\TurboTarot\obj\Debug\netcoreapp3.1\TurboTarot.csproj.AssemblyReference.cache
+C:\Users\Student\workspace\sideProjects\turboTarot\turboTarot\TurboTarot\obj\Debug\netcoreapp3.1\TurboTarot.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Student\workspace\sideProjects\turboTarot\turboTarot\TurboTarot\obj\Debug\netcoreapp3.1\TurboTarot.AssemblyInfoInputs.cache
+C:\Users\Student\workspace\sideProjects\turboTarot\turboTarot\TurboTarot\obj\Debug\netcoreapp3.1\TurboTarot.AssemblyInfo.cs
+C:\Users\Student\workspace\sideProjects\turboTarot\turboTarot\TurboTarot\obj\Debug\netcoreapp3.1\TurboTarot.csproj.CoreCompileInputs.cache
+C:\Users\Student\workspace\sideProjects\turboTarot\turboTarot\TurboTarot\obj\Debug\netcoreapp3.1\TurboTarot.dll
+C:\Users\Student\workspace\sideProjects\turboTarot\turboTarot\TurboTarot\obj\Debug\netcoreapp3.1\TurboTarot.pdb
+C:\Users\Student\workspace\sideProjects\turboTarot\turboTarot\TurboTarot\obj\Debug\netcoreapp3.1\TurboTarot.genruntimeconfig.cache
