@@ -7,14 +7,20 @@ namespace TurboTarot.Service
 {
     public class ConsoleService
     {
+        private string[] menuArray { get; } = { "Reveal [Birth] Cards", "Draw [Daily] Card", "View [Spreads]", "[Quit]" };
+        private string DrawBirthCards { get; } = "birth";
+        private string DrawDailyCard { get; } = "daily";
+        private string DrawSpreads { get; } = "spread";
+        private string SaveQuit { get; } = "quit";
+        private bool IsQuit { get; set; }
         public ConsoleService(TableService table)
         {
-            WriteToScreen("TurboTarot v0.0.1 11/14/2021");
+            WriteToScreen("TurboTarot v0.0.2 11/xx/2021");
             WriteToScreen("Prototype by Matt Pietropaoli");
             WriteToScreen("");
             WriteToScreen("for entertainment purposes only");
-            int userInput = -1;
-            while(userInput != 0)
+            string userInput = "";
+            while(!IsQuit)
             {
                 WriteToScreen("");
                 GetStringInput("Press enter to continue...");
@@ -22,14 +28,13 @@ namespace TurboTarot.Service
                 WriteToScreen("---------------------");
                 WriteToScreen("Welcome to TurboTarot");
                 WriteToScreen("---------------------");
-                string[] menuArray = { "Reveal Birth Cards", "Daily Card", "Tarot Spreads", "Quit" };
                 WriteMenu(menuArray);
                 WriteToScreen("---------------------");
-                userInput = GetIntInput("Choose an option: ");
-                if(userInput == 1)
+                userInput = GetStringInput("Choose an option: ").ToLower();
+                if (userInput.StartsWith(DrawBirthCards))
                 {
-                    string birthday = GetStringInput("Enter your birthday (YYYY/MM/DD): ");
-                    for(int i = birthday.Length - 1; i > 0; i--)
+                    string birthday = GetStringInput("Enter your birthday: ");
+                    for (int i = birthday.Length - 1; i > 0; i--)
                     {
                         char c = birthday[i];
                         if (c == '/' || c == '-')
@@ -57,7 +62,7 @@ namespace TurboTarot.Service
                         WriteToScreen("Invalid entry.");
                     }
                 }
-                else if(userInput == 2)
+                else if(userInput.StartsWith(DrawDailyCard))
                 {
                     ClearScreen();
                     WriteToScreen("---------------");
@@ -65,64 +70,73 @@ namespace TurboTarot.Service
                     WriteToScreen("---------------");
                     WriteToScreen($"[] {table.DrawDailyCard().Name}");
                 }
-                else if(userInput == 3)
+                else if(userInput.StartsWith(DrawSpreads))
                 {
-                    int spreadSelect = -1;
-                    while(spreadSelect != 0)
+                    string[] spreadNames = table.getSpreads();
+                    string spreadSelect = "";
+                    bool isQuitSpread = false;
+                    while(!isQuitSpread)
                     {
                         ClearScreen();
                         WriteToScreen("-------------");
                         WriteToScreen("TAROT SPREADS");
                         WriteToScreen("-------------");
-                        WriteMenu(table.getSpreads());
+                        WriteMenu(spreadNames);
                         WriteToScreen("-------------");
-                        spreadSelect = GetIntInput("Choose an option (0 to cancel): ");
-                        if(spreadSelect != 0)
+
+                        spreadSelect = GetStringInput("Choose an option or [cancel] ").ToLower();
+                        for(int i = 0; i < spreadNames.Length; i++)
                         {
-                            try
+                            if (spreadSelect.StartsWith(spreadNames[i].Substring(0, 3).ToLower()))
                             {
-                                ClearScreen();
-                                Spread selectedSpread = table.selectSpread(spreadSelect - 1);
-                                WriteToScreen("");
-                                WriteToScreen(selectedSpread.Name);
-                                WriteToScreen("");
-                                string cardStr = "";
-                                for (int i = 0; i < selectedSpread.NumberOfCards; i++)
+                                try
                                 {
-                                    cardStr += "[] ";
+                                    ClearScreen();
+                                    Spread selectedSpread = table.selectSpread(i);
+                                    WriteToScreen(selectedSpread.Name);
+                                    WriteToScreen("");
+                                    string cardStr = "";
+                                    for (int j = 0; j < selectedSpread.NumberOfCards; j++)
+                                    {
+                                        cardStr += "[] ";
+                                    }
+                                    WriteToScreen(cardStr);
+                                    WriteToScreen("");
+                                    WriteToScreen(selectedSpread.Description);
+                                    WriteToScreen("");
+                                    WriteToScreen("Take a moment to think of the subject of your reading.");
+                                    GetStringInput("Press enter to continue...");
+                                    ClearScreen();
+                                    WriteToScreen("");
+                                    WriteToScreen(selectedSpread.Description);
+                                    WriteToScreen("");
+
+                                    Card[] spread = table.DrawHand(selectedSpread.NumberOfCards);
+                                    foreach (Card card in spread)
+                                    {
+                                        WriteToScreen($"[] {card.Name}");
+                                    }
+                                    WriteToScreen("");
+                                    GetStringInput("Press enter to continue...");
                                 }
-                                WriteToScreen(cardStr);
-                                WriteToScreen("");
-                                WriteToScreen(selectedSpread.Description);
-                                WriteToScreen("");
-                                WriteToScreen("Take a moment to think of the subject of your reading.");
-                                GetStringInput("Press enter to continue...");
-                                ClearScreen();
-                                Card[] spread = table.DrawHand(selectedSpread.NumberOfCards);
-                                foreach (Card card in spread)
+                                catch (ArgumentException)
                                 {
-                                    WriteToScreen($"[] {card.Name}");
+                                    WriteToScreen("Not enough cards left.");
+                                    GetStringInput("Come back again tomorrow for a new deck []x");
+                                    break;
                                 }
-                                WriteToScreen("");
-                                GetStringInput("Press enter to continue...");
-                            }
-                            catch (ArgumentException)
-                            {
-                                WriteToScreen("Not enough cards left.");
-                                GetStringInput("Press enter to continue...");
-                                break;
-                            }
-                            catch (Exception)
-                            {
-                                WriteToScreen("Invalid entry.");
-                                GetStringInput("Press enter to continue...");
+                                catch (Exception)
+                                {
+                                    WriteToScreen("Invalid entry.");
+                                    GetStringInput("Press enter to continue...");
+                                }
                             }
                         }
                     }
                 }
-                else if(userInput == menuArray.Length)
+                else if(userInput.StartsWith(SaveQuit))
                 {
-                    userInput = 0;
+                    IsQuit = true;
                     // quit
                 }
                 else
@@ -132,6 +146,9 @@ namespace TurboTarot.Service
             }
             WriteToScreen("Thanks for playing!");
         }
+
+        // progressive karma system
+
         public void WriteMenu(string[] menuOptions)
         {
             if (menuOptions != null)
@@ -148,20 +165,6 @@ namespace TurboTarot.Service
             Console.Write(prompt);
             string entry = Console.ReadLine();
             return entry;
-        }
-        public int GetIntInput(string prompt)
-        {
-            Console.Write(prompt);
-            string entry = Console.ReadLine();
-            try
-            {
-                int entryInt = int.Parse(entry);
-                return entryInt;
-            }
-            catch (Exception)
-            {
-                return -1;
-            }
         }
         public void WriteToScreen(string output)
         {
